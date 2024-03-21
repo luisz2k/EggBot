@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /EggBot #TODO: fix path
-gnome-terminal -- bash -c ./bedrock_server
+echo STARTING SERVER
+java -jar server.jar
