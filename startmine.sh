@@ -12,4 +12,3 @@ cd Minecraft || { echo "Error: Minecraft folder not found."; exit 1; }
 echo Server Starting command has been executed
 fi
 
-read -p "Press Enter to exit..."
