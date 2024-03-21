@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./local.env" });
+require("dotenv").config();
 const { Client, GatewayIntentBits } = require("discord.js");
 const { handleTerminalCommand } = require("./terminalCommand");
 
