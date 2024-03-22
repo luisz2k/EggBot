@@ -1,6 +1,8 @@
-require("dotenv").config();
-const { Client, GatewayIntentBits } = require("discord.js");
-const { exec } = require("child_process");
+import dotenv from "dotenv";
+import { Client, GatewayIntentBits } from "discord.js";
+import { exec } from "child_process";
+
+dotenv.config();
 
 const client = new Client({
   intents: [
@@ -55,7 +57,7 @@ client.on("messageCreate", (message) => {
 
       // Check if java.exe is present in the tasklist output
       if (stdout.includes("java.exe")) {
-        message.reply("Minecraft server is up and running");
+        message.reply("Minecraft server is up and running at ...");
       } else {
         message.reply("Minecraft server is off");
       }
