@@ -2,7 +2,7 @@ function handleTerminalCommand(client, message) {
   if (!message || message.author.bot) return;
 
   // Command we execute from discord
-  if (message.content.startsWith("!execute")) {
+  if (message.content.startsWith("!egg")) {
     const requiredRoleName = "Moderators";
     const requiredRole = message.guild.roles.cache.find(
       (role) => role.name === requiredRoleName,
@@ -17,14 +17,14 @@ function handleTerminalCommand(client, message) {
 
     // Pre-written commands
     const preWrittenCommands = {
-      startserver: {
+      start: {
         command: ".\\startmine.sh",
         response: "Server started successfully.",
       },
     };
 
     // Extract the pre written command from the message
-    const commandName = message.content.slice("!execute".length).trim();
+    const commandName = message.content.slice("!egg".length).trim();
 
     if (!commandName) {
       message.channel.send("Please provide a valid command to execute");
