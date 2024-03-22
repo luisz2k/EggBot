@@ -1,6 +1,5 @@
 require("dotenv").config();
 const { Client, GatewayIntentBits } = require("discord.js");
-const { handleTerminalCommand } = require("./terminalCommand");
 const { exec } = require("child_process");
 
 const client = new Client({
@@ -17,10 +16,6 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
-  handleTerminalCommand(client, message);
-});
-
-client.on("messageCreate", (message) => {
   if (message.author.bot) {
     return;
   }
@@ -29,8 +24,24 @@ client.on("messageCreate", (message) => {
     message.reply("Hello!");
   }
 
-  if (message.content === "mmhmm") {
-    message.reply("MMHMM MMHMM");
+  if (
+    message.content === "mmhmm" ||
+    message.content === "mmhm" ||
+    message.content === "mhm"
+  ) {
+    message.reply("mmhmm mmhmm");
+  }
+
+  if (message.content === "!egg start") {
+    exec(".\\startmine.sh", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${error.message}`);
+        message.channel.send(`Error executing command: ${error.message}`);
+        return;
+      }
+      console.log(`response: Server started successfully.`);
+      message.channel.send("Server started successfully.");
+    });
   }
 
   if (message.content === "!egg status") {
