@@ -16,23 +16,22 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
+  const msg = message.content;
+
   if (message.author.bot) {
+    // do not execute commands if entered by a bot
     return;
   }
 
-  if (message.content === "Hi") {
-    message.reply("Hello!");
-  }
-
-  if (
-    message.content === "mmhmm" ||
-    message.content === "mmhm" ||
-    message.content === "mhm"
-  ) {
+  if (msg === "mmhmm" || msg === "mmhm" || msg === "mhm") {
     message.reply("mmhmm mmhmm");
   }
 
-  if (message.content === "!egg start") {
+  // Egg commands
+
+  // Start command
+  if (msg === "!egg start") {
+    // Run the bash script to start the minecraft server
     exec(".\\startmine.sh", (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing command: ${error.message}`);
@@ -44,7 +43,8 @@ client.on("messageCreate", (message) => {
     });
   }
 
-  if (message.content === "!egg status") {
+  // Status command
+  if (msg === "!egg status") {
     // Use tasklist command to list all running processes
     exec("tasklist", (error, stdout, stderr) => {
       if (error) {
