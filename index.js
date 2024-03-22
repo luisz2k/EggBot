@@ -37,7 +37,11 @@ client.on("messageCreate", (message) => {
     return;
   }
 
-  if (msg === "mmhmm" || msg === "mmhm" || msg === "mhm") {
+  if (
+    msg.toLowerCase() === "mmhmm" ||
+    msg.toLowerCase() === "mmhm" ||
+    msg.toLowerCase() === "mhm"
+  ) {
     message.reply("mmhmm mmhmm");
   }
 
@@ -57,6 +61,13 @@ client.on("messageCreate", (message) => {
     });
   }
 
+  // Help command
+  if (msg === "!egg help") {
+    message.reply(
+      "!egg start - to start the server\n!egg status - to check if the server is on or off\n!egg ip - check the server ip address",
+    );
+  }
+
   // Status command
   if (msg === "!egg status") {
     // Use tasklist command to list all running processes
@@ -74,6 +85,17 @@ client.on("messageCreate", (message) => {
         message.reply("Minecraft server is off");
       }
     });
+  }
+
+  if (msg === "!egg ip") {
+    publicIpv4()
+      .then((ip) => {
+        ip_addr = ip;
+        message.reply("IP address is: " + ip_addr);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 });
 
