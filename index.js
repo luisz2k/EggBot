@@ -57,7 +57,7 @@ client.on("messageCreate", (message) => {
         return;
       }
       console.log(`response: Server started successfully.`);
-      message.channel.send("Server started successfully.");
+      // message.channel.send("Server started successfully.");  TODO: fix bug, msg sends after closing bash script
     });
   }
 
@@ -78,8 +78,8 @@ client.on("messageCreate", (message) => {
         return;
       }
 
-      // Check if java.exe is present in the tasklist output
-      if (stdout.includes("java.exe")) {
+      // Check if the java exe is present in the tasklist
+      if (stdout.includes("java.exe") || stdout.includes("javaw.exe")) {
         message.reply("Minecraft server is up and running at " + ip_addr);
       } else {
         message.reply("Minecraft server is off");
