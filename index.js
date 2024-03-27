@@ -50,15 +50,18 @@ client.on("messageCreate", (message) => {
   // Start command
   if (msg === "!egg start") {
     // Run the bash script to start the minecraft server
-    exec(".\\startmine.sh", (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error executing command: ${error.message}`);
-        message.channel.send(`Error executing command: ${error.message}`);
-        return;
-      }
-      console.log(`response: Server started successfully.`);
-      // message.channel.send("Server started successfully.");  TODO: fix bug, msg sends after closing bash script
-    });
+    exec(
+      "C:/Users/luisz/OneDrive/Desktop/EggBot/startmine.bat",
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error executing command: ${error.message}`);
+          message.channel.send(`Error executing command: ${error.message}`);
+          return;
+        }
+        console.log(`response: Server started successfully.`);
+        // message.channel.send("Server started successfully.");  TODO: fix bug, msg sends after closing bash script
+      },
+    );
   }
 
   // Help command
@@ -79,7 +82,7 @@ client.on("messageCreate", (message) => {
       }
 
       // Check if the java exe is present in the tasklist
-      if (stdout.includes("java.exe") || stdout.includes("javaw.exe")) {
+      if (stdout.includes("java.exe")) {
         message.reply("Minecraft server is up and running at " + ip_addr);
       } else {
         message.reply("Minecraft server is off");
