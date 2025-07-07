@@ -107,6 +107,17 @@ client.on("messageCreate", (message) => {
         console.error(error);
       });
   }
+
+  if (msg === "!egg stop") {
+    exec("taskkill /f /im java.exe", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error stopping server: ${error}`);
+        message.reply("Failed to stop the Minecraft server. Is it running?");
+        return;
+      }
+      message.reply("Minecraft server stopped successfully.");
+    });
+  }
 });
 
 client.login(process.env.BOT_TOKEN);
