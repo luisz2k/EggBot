@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { Client, GatewayIntentBits } from "discord.js";
 import { exec } from "child_process";
 import { publicIpv4 } from "public-ip";
+import { spawn } from "child_process";
 
 dotenv.config();
 
@@ -37,31 +38,37 @@ client.on("messageCreate", (message) => {
     return;
   }
 
-  if (
-    msg.toLowerCase() === "mmhmm" ||
-    msg.toLowerCase() === "mmhm" ||
-    msg.toLowerCase() === "mhm"
-  ) {
-    message.reply("mmhmm mmhmm");
-  }
-
   // Egg commands
 
   // Start command
   if (msg === "!egg start") {
-    // Run the bash script to start the minecraft server
-    exec(
+    const minecraftProcess = spawn(
       "C:/Users/luisz/OneDrive/Desktop/EggBot/startmine.bat",
-      (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error executing command: ${error.message}`);
-          message.channel.send(`Error executing command: ${error.message}`);
-          return;
-        }
-        console.log(`response: Server started successfully.`);
-        // message.channel.send("Server started successfully.");  TODO: fix bug, msg sends after closing bash script
-      },
     );
+
+    message.channel.send("Starting Minecraft server...");
+
+    minecraftProcess.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+      // Check for specific startup message in console output
+      if (
+        data.toString().includes("Done") ||
+        data.toString().includes('For help, type "help"') ||
+        data.toString().includes("Preparing spawn area")
+      ) {
+        message.channel.send(
+          "Minecraft server started successfully! IP: " + ip_addr,
+        );
+      }
+    });
+
+    minecraftProcess.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    minecraftProcess.on("close", (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
   }
 
   // Help command
