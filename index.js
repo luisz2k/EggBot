@@ -7,6 +7,7 @@ import { spawn } from "child_process";
 dotenv.config();
 
 let ip_addr;
+let hasSentStartupMessage = false;
 
 const client = new Client({
   intents: [
@@ -50,12 +51,10 @@ client.on("messageCreate", (message) => {
 
     minecraftProcess.stdout.on("data", (data) => {
       console.log(`stdout: ${data}`);
-      // Check for specific startup message in console output
-      if (
-        data.toString().includes("Done") ||
-        data.toString().includes('For help, type "help"') ||
-        data.toString().includes("Preparing spawn area")
-      ) {
+      const output = data.toString();
+
+      if (!hasSentStartupMessage && output.includes("Preparing spawn area")) {
+        hasSentStartupMessage = true;
         message.channel.send(
           "Minecraft server started successfully! IP: " + ip_addr,
         );
@@ -67,6 +66,7 @@ client.on("messageCreate", (message) => {
     });
 
     minecraftProcess.on("close", (code) => {
+      hasSentStartupMessage = false;
       console.log(`child process exited with code ${code}`);
     });
   }
