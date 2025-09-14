@@ -1,0 +1,4 @@
+- Fix any role being able to execute commands
+- start when already started
+- stop when already stopped
+- test when starting 2 servers simultaneously

@@ -71,6 +71,35 @@ client.on("messageCreate", (message) => {
     });
   }
 
+  if (msg === "!bot start") {
+    const minecraftProcess = spawn(
+      "C:/Users/luisz/OneDrive/Desktop/EggBot/startmine2.bat",
+    );
+
+    message.channel.send("Starting Minecraft server...");
+
+    minecraftProcess.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+      const output = data.toString();
+
+      if (!hasSentStartupMessage && output.includes("Preparing spawn area")) {
+        hasSentStartupMessage = true;
+        message.channel.send(
+          "Minecraft server started successfully! IP: " + ip_addr + ":25566",
+        );
+      }
+    });
+
+    minecraftProcess.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    minecraftProcess.on("close", (code) => {
+      hasSentStartupMessage = false;
+      console.log(`child process exited with code ${code}`);
+    });
+  }
+
   // Help command
   if (msg === "!egg help") {
     message.reply(
